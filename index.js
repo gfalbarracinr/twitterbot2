@@ -47,6 +47,7 @@ async function changeStatus() {
 }
 
 function onTweeted(err) {
+    console.log(new Date());
     if (err) {
         console.log('Twitter error: ', err.message);
     } else {
