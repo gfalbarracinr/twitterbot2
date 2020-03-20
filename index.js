@@ -41,6 +41,7 @@ async function changeStatus() {
                 Infectados: ${response.cases}
                 Recuperados: ${response.recovered}
                 Muertos: ${response.deaths}
+                #Covid_19
             `
         }, onTweeted
     );
