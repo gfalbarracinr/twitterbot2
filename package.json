@@ -1,0 +1,16 @@
+{
+  "name": "covbot",
+  "version": "1.0.0",
+  "description": "Tracking tool for covid outbreak in Colombia - Twitter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Giovanny Albarracin",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "node-schedule": "^1.3.2",
+    "twit": "^2.2.11"
+  }
+}
