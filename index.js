@@ -56,7 +56,7 @@ function onTweeted(err) {
     }
 }
 
-var j = schedule.scheduleJob('* 10 * * *', function(fireDate){
+var j = schedule.scheduleJob('* 5 * * *', function(fireDate){
      console.log('Scheduler running at ', fireDate);
      changeStatus();
 });
