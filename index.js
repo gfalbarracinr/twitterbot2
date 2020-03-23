@@ -20,6 +20,8 @@ const getData = async () =>  {
         
 }
 
+var count = 0;
+
 async function onAuthenticated(err) {
     if (err) {
         console.log(err);
@@ -33,7 +35,6 @@ async function onAuthenticated(err) {
 
 async function changeStatus() {
     const response = await getData();
-    console.log(response);
     T.post(
         'statuses/update',
         {
@@ -48,15 +49,9 @@ async function changeStatus() {
 }
 
 function onTweeted(err) {
-    console.log(new Date());
-    if (err) {
-        console.log('Twitter error: ', err.message);
-    } else {
-        console.log('A new report was generated.');
-    }
+    count+=1;
 }
 
 var j = schedule.scheduleJob('42 * * * *', function(fireDate){
-     console.log('Scheduler running at ', fireDate);
      changeStatus();
 });
