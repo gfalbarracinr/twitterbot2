@@ -1,9 +1,10 @@
+const Report = require('./report.js');
 const Twit = require('twit');
 const config = require('./config.js');
 const axios = require('axios');
 var schedule = require('node-schedule');
 
-
+const api = 'https://corona.lmao.ninja/v2/countries/colombia';
 const T = new Twit(config);
 
 T.get('account/verify_credentials',  {
@@ -14,13 +15,15 @@ T.get('account/verify_credentials',  {
 
 
 const getData = async () =>  {
-    const response = await axios.get('https://corona.lmao.ninja/countries/colombia');
-    const data = await response.data;
-    return data;
+    try {
+        const response = await axios.get(api);
+        const data = await response.data;
+        return data;
+    } catch (error){
+        return undefined;
+    }
         
 }
-
-var count = 0;
 
 async function onAuthenticated(err) {
     if (err) {
@@ -34,24 +37,36 @@ async function onAuthenticated(err) {
 }
 
 async function changeStatus() {
-    const response = await getData();
+    response = await getData();
+    if (response === undefined) return;
+    const report = new Report(response);
+    const allowed = report.compareToPrevious();
+    if (allowed) {
+        tweet(report);
+    }
+}
+
+function tweet (report) {
     T.post(
         'statuses/update',
         {
             status: `Reporte de casos de Coronavirus Colombia
-                Infectados: ${response.cases}
-                Recuperados: ${response.recovered}
-                Muertos: ${response.deaths}
-                #Covid_19
+                Infectados: ${report.cases}
+                Recuperados: ${report.recovered}
+                Muertos: ${report.deaths}
+                Pruebas realizadas: ${report.tests}
+                #Covid_19 #coronavirus
             `
         }, onTweeted
     );
+    report.saveReport();
 }
 
 function onTweeted(err) {
-    count+=1;
+ //Here we have to connect to slack if error
 }
 
 var j = schedule.scheduleJob('42 * * * *', function(fireDate){
      changeStatus();
 });
+
