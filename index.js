@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node');
 const Report = require('./report.js');
 const Twit = require('twit');
 const config = require('./config.js');
@@ -6,6 +7,7 @@ var schedule = require('node-schedule');
 
 const api = 'https://corona.lmao.ninja/v2/countries/colombia';
 const T = new Twit(config);
+Sentry.init({ dsn: 'https://67bab4471c6644c79663f40a63bede2a@o385617.ingest.sentry.io/5218710' });
 
 T.get('account/verify_credentials',  {
     include_entities: false,
@@ -66,7 +68,7 @@ function onTweeted(err) {
  //Here we have to connect to slack if error
 }
 
-var j = schedule.scheduleJob('42 * * * *', function(fireDate){
-     changeStatus();
+var j = schedule.scheduleJob('0 */2 * * *', function(fireDate){
+    changeStatus();
 });
 
